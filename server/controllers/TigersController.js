@@ -10,7 +10,9 @@ export class TigersController extends BaseController {
       .get('', this.getTigers)
       .get('/:tigerId', this.getTiger)
       .put('/:tigerId', this.editTiger)
-      // TODO post and delete
+      .post('', this.createTiger)
+      .delete('/:tigerId', this.deleteTiger)
+    // TODO post and delete
   }
 
   async getTigers(req, res, next) {
@@ -27,7 +29,6 @@ export class TigersController extends BaseController {
     }
   }
 
-
   async getTiger(req, res, next) {
     try {
       logger.log('what is the request id', req.params.tigerId)
@@ -39,7 +40,6 @@ export class TigersController extends BaseController {
       next(error)
     }
   }
-
 
   async editTiger(req, res, next) {
     try {
@@ -55,8 +55,23 @@ export class TigersController extends BaseController {
     }
   }
 
+  async createTiger(req, res, next) {
+    try {
+      const tiger = await tigersService.createTiger(req.body)
+      res.send(tiger)
+    } catch (error) {
+      next(error)
+    }
+  }
 
+  async deleteTiger(req, res, next) {
+    try {
+      const tiger = await tigersService.deleteTigerById(req.params.tigerId)
+      res.send(tiger)
+    } catch (error) {
+      next(error)
+    }
 
-
+  }
 
 }
